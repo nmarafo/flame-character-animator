@@ -16,38 +16,67 @@ class SkeletonViewGame extends FlameGame {
   @override
   Future<void> onLoad() async {
     await super.onLoad();
-    // Set a fixed resolution camera if desired, or use default
-    // camera.viewport = FixedResolutionViewport(Vector2(400, 600));
     camera.viewfinder.anchor = Anchor.center; // Center the view
 
-    // Example: Add some body parts for this view
-    // TODO: Replace with actual body part data and positioning
+    // Define positions based on viewName
+    Vector2 headPos;
+    Vector2 torsoPos;
+    Vector2 leftArmPos;
+    Vector2 rightArmPos;
+    // Define sizes (can also vary by view if needed)
+    Vector2 headSize = Vector2(50, 50);
+    Vector2 torsoSize = Vector2(80, 100);
+    Vector2 armSize = Vector2(20, 70); // Same size for both arms for now
+
+    // --- Define Positions based on View ---
+    if (viewName == 'Side') {
+      // Positions for Side View (adjust X values mainly)
+      headPos = Vector2(0, -150); // Head might be centered
+      torsoPos = Vector2(0, -75); // Torso centered
+      // For side view, arms might be closer together horizontally
+      // or you might only show one, depending on desired style.
+      // Let's place them very close for a simple representation.
+      leftArmPos = Vector2(-5, -60); 
+      rightArmPos = Vector2(5, -60); // Slightly offset or overlapping
+      // Adjust arm size if needed for perspective
+      // armSize = Vector2(15, 70); // Example: slightly thinner arm in side view
+
+    } else { 
+      // Default positions (used for Front and Back for now)
+      headPos = Vector2(0, -150);
+      torsoPos = Vector2(0, -75);
+      leftArmPos = Vector2(-60, -60); // Wider separation for front/back
+      rightArmPos = Vector2(60, -60);
+    }
+    // --- End Define Positions ---
+
+
+    // Add body parts using the defined positions and sizes
     add(BodyPart(
       name: 'Head ($viewName)',
-      initialPosition: Vector2(0, 0),
-      size: Vector2(50, 50),
+      initialPosition: headPos,
+      size: headSize,
       color: Colors.blue,
     ));
     add(BodyPart(
       name: 'Torso ($viewName)',
-      initialPosition: Vector2(0, -75),
-      size: Vector2(80, 100),
+      initialPosition: torsoPos,
+      size: torsoSize,
       color: Colors.green,
     ));
-     add(BodyPart(
+    add(BodyPart(
       name: 'Left Arm ($viewName)',
-      initialPosition: Vector2(-60, -60),
-      size: Vector2(20, 70),
+      initialPosition: leftArmPos,
+      size: armSize, // Use potentially adjusted armSize
       color: Colors.orange,
     ));
-      add(BodyPart(
+    add(BodyPart(
       name: 'Right Arm ($viewName)',
-      initialPosition: Vector2(60, -60),
-      size: Vector2(20, 70),
+      initialPosition: rightArmPos,
+      size: armSize, // Use potentially adjusted armSize
       color: Colors.purple,
     ));
-    // Add more parts (legs, hands, etc.) as needed
+    
+    // TODO: Add definitions and logic for legs, hands, etc. for each view
   }
-
-  // Optional: Override update or render if needed for the whole view
 }
